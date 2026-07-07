@@ -43,7 +43,7 @@ def busqueda_precio(p_min, p_max, arreglos, bodega):
         lista_encontrados.sort()
         print(f"Los arreglos encontrados son: {lista_encontrados}.")
 
-# funcion opcion 3 - buscar codigo:
+# funcion opcion 3, 4 y 5 - buscar codigo:
 def buscar_codigo(codigo, bodega):
     return codigo in bodega
 
@@ -54,6 +54,78 @@ def actualizar_precio(codigo, nuevo_precio, bodega):
         return True
     else:
         return False
+
+# funcion opcion 4 - validar codigo:
+def validar_codigo(codigo):
+    if buscar_codigo(codigo, bodega) and (codigo.strip() != ""):
+        return True
+    else:
+        return False
+
+# funcion opcion 4 - validar nombre:
+def validar_nombre(nombre):
+    if nombre.strip() == "":
+        return False
+    else:
+        return True
+    
+# funcion opcion 4 - validar tipo:
+def validar_tipo(tipo):
+    if tipo.strip() == "":
+        return False
+    else:
+        return True
+    
+# funcion opcion 4 - validar color principal:
+def validar_color_principal(color_principal):
+    if color_principal.strip() == "":
+        return False
+    else:
+        return True
+    
+# funcion opcion 4 - validar tamaño:
+def validar_tamano(tamano):
+    if (tamano != "S") or (tamano != "M") or (tamano != "L"):
+        return False
+    else:
+        return True
+
+# funcion opcion 4 - validar incluye tarjeta:
+def validar_incluye_tarjeta(incluye_tarjeta):
+    if incluye_tarjeta == "s":
+        return True
+    else:
+        return False
+    
+# funcion opcion 4 - validar temporada:
+def validar_temporada(temporada):
+    if temporada.strip() == "":
+        return False
+    else:
+        return True
+    
+# funcion opcion 4 - validar precio:
+def validar_precio(precio):
+    if precio > 0:
+        return True
+    else:
+        return False
+    
+# funcion opcion 4 - validar unidades:
+def validar_unidades(unidades):
+    if unidades >= 0:
+        return True
+    else:
+        return False
+    
+# funcion opcion 4 - agregar arreglo:
+def agregar_arreglo(arreglos, bodega, codigo, nombre, tipo, color_principal, tamano, incluye_tarjeta, temporada, precio, unidades):
+    if buscar_codigo(codigo, bodega):
+        print("Error, el código ya existe.")
+        return False
+    else:
+        arreglos[codigo] = [nombre, tipo, color_principal, tamano, incluye_tarjeta, temporada]
+        bodega[codigo] = [precio, unidades]
 
 
 
@@ -142,7 +214,70 @@ while True:
                     if otro_intento != "s":
                         break
         case 4:
-            print("4")
+            while True:
+                codigo = input("Ingrese el código del arreglo a agregar: ").upper().strip()
+                if validar_codigo(codigo):
+                    break
+                else:
+                    print("Error, el código no debe estar vacío ni ser sólo espacios o ya estar registrado.")
+            while True:
+                nombre = input("Ingrese el nombre del arreglo a agregar: ").title().strip()
+                if validar_nombre(nombre):
+                    break
+                else:
+                    print("Error, el nombre no debe estar vacío ni ser sólo espacios.")
+            while True:
+                tipo = input("Ingrese el tipo del arreglo a agregar: ").lower().strip()
+                if validar_tipo(tipo):
+                    break
+                else:
+                    print("Error, el tipo no debe estar vacío ni ser sólo espacios.")
+            while True:
+                color_principal = input("Ingrese el color principal del arreglo a agregar: ").lower().strip()
+                if validar_color_principal(color_principal):
+                    break
+                else:
+                    print("Error, el color principal no debe estar vacío ni ser sólo espacios.")
+            while True:
+                tamano = input("Ingrese el tamaño del arreglo a agregar (S/M/L): ").upper().strip()
+                if validar_tamano(tamano):
+                    break
+                else:
+                    print("Error, el tamaño debe ser exactamente S, M ó L.")
+            while True:
+                incluye_tarjeta = input("Ingrese si el arreglo incluye tarjeta (s = sí, n = no): ").strip().lower()
+                if validar_incluye_tarjeta(incluye_tarjeta):
+                    if incluye_tarjeta == "s":
+                        incluye_tarjeta = True
+                    else:
+                        incluye_tarjeta = False
+                    break
+                else:
+                    print("Error, sólo debe ingresar exactamente s ó n.")
+            while True:
+                temporada = input("Ingrese la temporada a la que corresponde el arreglo: ").strip().lower()
+                if validar_temporada(temporada):
+                    break
+                else:
+                    print("Error, la temporada no debe estar vacía ni ser sólo espacios.")
+            while True:
+                try:
+                    precio = int(input("Ingrese el precio del arreglo a agregar: "))
+                    if validar_precio(precio):
+                        break
+                    else:
+                        print("Error, el precio debe ser mayor que cero.")
+                except ValueError:
+                    print("Error, el precio debe ser un número entero.")
+            while True:
+                try:
+                    unidades = int(input("Ingrese el número de unidades del arreglo a agregar: "))
+                    if validar_unidades(unidades):
+                        break
+                    else:
+                        print("Error, las unidades deben ser un número mayor o igual que cero.")
+                except ValueError:
+                    print("Error, las unidades deben ser un número entero.")
         case 5:
             print("5")
         case 6:
