@@ -121,12 +121,10 @@ def validar_unidades(unidades):
 # funcion opcion 4 - agregar arreglo:
 def agregar_arreglo(arreglos, bodega, codigo, nombre, tipo, color_principal, tamano, incluye_tarjeta, temporada, precio, unidades):
     if buscar_codigo(codigo, bodega):
-        print("Error, el código ya existe.")
         return False
     else:
         arreglos[codigo] = [nombre, tipo, color_principal, tamano, incluye_tarjeta, temporada]
         bodega[codigo] = [precio, unidades]
-        print("Arreglo agregado con éxito.")
         return True
 
 # funcion opcion 5 - eliminar arreglo:
@@ -285,7 +283,10 @@ while True:
                         print("Error, las unidades deben ser un número mayor o igual que cero.")
                 except ValueError:
                     print("Error, las unidades deben ser un número entero.")
-            agregar_arreglo(arreglos, bodega, codigo, nombre, tipo, color_principal, tamano, incluye_tarjeta, temporada, precio, unidades)
+            if agregar_arreglo(arreglos, bodega, codigo, nombre, tipo, color_principal, tamano, incluye_tarjeta, temporada, precio, unidades):
+                print("Arreglo agregado con éxito.")
+            else:
+                print("Error, el código ya existe.")
         case 5:
             if len(bodega) == 0:
                 print("Error, no hay arreglos registrados.")
