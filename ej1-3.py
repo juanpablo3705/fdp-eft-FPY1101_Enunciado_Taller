@@ -43,7 +43,26 @@ def busqueda_precio(p_min, p_max, bodega, arreglos):
         lista_encontrados.sort()
         print(f"Arreglos encontrados en el rango de precios: {lista_encontrados}")
 
+# funcion buscar codigo:
+def buscar_codigo(codigo, bodega):
+    return codigo in bodega
 
+# funcion opcion 3 - actualizar precio:
+def actualizar_precio(codigo, nuevo_precio, bodega):
+    if buscar_codigo(codigo, bodega):
+        bodega[codigo][0] = nuevo_precio
+        return True
+    else:
+        return False
+    
+# funcion opcion 5 - eliminar arreglo:
+def eliminar_arreglo(codigo, bodega, arreglos):
+    if buscar_codigo(codigo, bodega):
+        del arreglos[codigo]
+        del bodega[codigo]
+        return True
+    else:
+        return False
 
 # programa principal:
 arreglos = {
@@ -88,11 +107,32 @@ while True:
                     print("Error, el precio mínimo debe ser menor o igual al precio máximo y ambos mayores que cero.")          
             busqueda_precio(p_min, p_max, bodega, arreglos)
         case 3:
-            print("3")
+            while True:
+                codigo = input("Ingrese codigo del arreglo a modificar precio: ").strip().upper()
+                while True:
+                    try:
+                        nuevo_precio = int(input("Ingrese nuevo precio: "))
+                        if nuevo_precio > 0:
+                            break
+                        else:
+                            print("Error, el nuevo precio debe ser un valor entero positivo.")
+                    except ValueError:
+                        print("Error, el nuevo precio debe ser un valor entero positivo.")
+                if actualizar_precio(codigo, nuevo_precio, bodega):
+                    print("Precio actualizado.")
+                else:
+                    print("El código no existe.")
+                otra_vez = input("¿Desea actualizar otro precio (s/n)").strip().lower()
+                if otra_vez == "n":
+                    break
         case 4:
             print("4")
         case 5:
-            print("5")
+            codigo = input("Ingrese el codigo del arreglo que desea eliminar: ").strip().upper()
+            if eliminar_arreglo(codigo, bodega, arreglos):
+                print("Arreglo eliminado.")
+            else:
+                print("El código no existe.")
         case 6:
             print("Programa finalizado.")
             break
