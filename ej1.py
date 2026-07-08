@@ -56,11 +56,11 @@ def actualizar_precio(codigo, nuevo_precio, bodega):
         return False
 
 # funcion opcion 4 - validar codigo:
-def validar_codigo(codigo):
-    if buscar_codigo(codigo, bodega) and (codigo.strip() != ""):
-        return True
-    else:
+def validar_codigo(codigo, bodega):
+    if buscar_codigo(codigo, bodega) or (codigo.strip() == ""):
         return False
+    else:
+        return True
 
 # funcion opcion 4 - validar nombre:
 def validar_nombre(nombre):
@@ -85,14 +85,14 @@ def validar_color_principal(color_principal):
     
 # funcion opcion 4 - validar tamaño:
 def validar_tamano(tamano):
-    if (tamano != "S") or (tamano != "M") or (tamano != "L"):
-        return False
-    else:
+    if (tamano == "S") or (tamano == "M") or (tamano == "L"):
         return True
+    else:
+        return False
 
 # funcion opcion 4 - validar incluye tarjeta:
 def validar_incluye_tarjeta(incluye_tarjeta):
-    if incluye_tarjeta == "s":
+    if (incluye_tarjeta == "s") or (incluye_tarjeta == "n"):
         return True
     else:
         return False
@@ -126,10 +126,17 @@ def agregar_arreglo(arreglos, bodega, codigo, nombre, tipo, color_principal, tam
     else:
         arreglos[codigo] = [nombre, tipo, color_principal, tamano, incluye_tarjeta, temporada]
         bodega[codigo] = [precio, unidades]
+        print("Arreglo agregado con éxito.")
+        return True
 
-
-
-
+# funcion opcion 5 - eliminar arreglo:
+def eliminar_arreglo(arreglos, bodega, codigo):
+    if buscar_codigo(codigo, bodega):
+        del(bodega[codigo])
+        del(arreglos[codigo])
+        return True
+    else:
+        return False
 
 # programa principal:
 arreglos = {
@@ -199,13 +206,13 @@ while True:
                             break
                     while True:
                         try:
-                            nuevo_precio = float(input("Ingrese el nuevo precio: "))
+                            nuevo_precio = int(input("Ingrese el nuevo precio: "))
                             if nuevo_precio <= 0:
                                 print("Error, el nuevo precio debe ser mayor o igual que cero.")
                             else:
                                 break
                         except ValueError:
-                            print("Error, el nuevo precio debe ser un número entero o decimal.")
+                            print("Error, el nuevo precio debe ser un número entero.")
                     if actualizar_precio(codigo, nuevo_precio, bodega):
                         print("Precio actualizado con éxito.")
                     else:
@@ -216,7 +223,7 @@ while True:
         case 4:
             while True:
                 codigo = input("Ingrese el código del arreglo a agregar: ").upper().strip()
-                if validar_codigo(codigo):
+                if validar_codigo(codigo, bodega):
                     break
                 else:
                     print("Error, el código no debe estar vacío ni ser sólo espacios o ya estar registrado.")
@@ -278,8 +285,22 @@ while True:
                         print("Error, las unidades deben ser un número mayor o igual que cero.")
                 except ValueError:
                     print("Error, las unidades deben ser un número entero.")
+            agregar_arreglo(arreglos, bodega, codigo, nombre, tipo, color_principal, tamano, incluye_tarjeta, temporada, precio, unidades)
         case 5:
-            print("5")
+            if len(bodega) == 0:
+                print("Error, no hay arreglos registrados.")
+            else:
+                while True:
+                    codigo = input("Ingrese el código del arreglo a eliminar: ").strip().upper()
+                    if codigo.strip() == "":
+                        print("Error, el código no puede estar vacío o ser sólo espacios.")
+                    else:
+                        if eliminar_arreglo(arreglos, bodega, codigo):
+                            print("Arreglo eliminado.")
+                            break
+                        else:
+                            print("El código no existe.")
+                            break
         case 6:
             print("Programa finalizado.")
             break
